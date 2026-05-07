@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import sys
 from datetime import datetime
 
 import pytesseract
@@ -35,13 +36,31 @@ OCR_CHAR_MAP = {
 
 
 def setup_tesseract(custom_path=None):
-    """Configure Tesseract executable path."""
+    """Configure Tesseract executable path.
+    Priority: 1) custom_path  2) bundled with app  3) system install
+    """
     if custom_path and os.path.isfile(custom_path):
         pytesseract.pytesseract.tesseract_cmd = custom_path
         return True
-    elif os.path.isfile(TESSERACT_DEFAULT_PATH):
+
+    # Check for bundled Tesseract (PyInstaller --onefile extracts to sys._MEIPASS)
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.dirname(os.path.abspath(__file__))
+
+    bundled = os.path.join(base, 'tesseract_portable', 'tesseract.exe')
+    if os.path.isfile(bundled):
+        tessdata_dir = os.path.join(base, 'tesseract_portable', 'tessdata')
+        os.environ['TESSDATA_PREFIX'] = tessdata_dir
+        pytesseract.pytesseract.tesseract_cmd = bundled
+        return True
+
+    # Fallback: system install
+    if os.path.isfile(TESSERACT_DEFAULT_PATH):
         pytesseract.pytesseract.tesseract_cmd = TESSERACT_DEFAULT_PATH
         return True
+
     return False
 
 
