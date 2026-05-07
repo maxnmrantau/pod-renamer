@@ -51,8 +51,13 @@ def setup_tesseract(custom_path=None):
 
     bundled = os.path.join(base, 'tesseract_portable', 'tesseract.exe')
     if os.path.isfile(bundled):
-        tessdata_dir = os.path.join(base, 'tesseract_portable', 'tessdata')
+        tesseract_dir = os.path.join(base, 'tesseract_portable')
+        tessdata_dir = os.path.join(tesseract_dir, 'tessdata')
         os.environ['TESSDATA_PREFIX'] = tessdata_dir
+        # Add tesseract dir to PATH so Windows finds its DLLs
+        current_path = os.environ.get('PATH', '')
+        if tesseract_dir not in current_path:
+            os.environ['PATH'] = tesseract_dir + os.pathsep + current_path
         pytesseract.pytesseract.tesseract_cmd = bundled
         return True
 
