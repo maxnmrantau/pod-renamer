@@ -111,11 +111,12 @@ PSM_MODES = [6, 3]
 
 def extract_text_multi(image_path):
     """Extract text using multiple preprocessing variants and PSM modes.
-    Returns all extracted text concatenated, plus individual results for debugging.
+    Returns (all_texts, debug_info, errors).
     """
     variants = preprocess_variants(image_path)
     all_texts = []
     debug_info = []
+    errors = []
 
     for variant_name, img in variants:
         for psm in PSM_MODES:
@@ -125,10 +126,10 @@ def extract_text_multi(image_path):
                 if text.strip():
                     all_texts.append(text)
                     debug_info.append(f"[{variant_name}/psm{psm}] {len(text)} chars")
-            except Exception:
-                continue
+            except Exception as e:
+                errors.append(f"[{variant_name}/psm{psm}] {e}")
 
-    return all_texts, debug_info
+    return all_texts, debug_info, errors
 
 
 def fix_ocr_resi(candidate):
@@ -310,9 +311,11 @@ def process_single_image(image_path, output_folder):
 
     try:
         # Extract text with multiple strategies
-        all_texts, debug_info = extract_text_multi(image_path)
+        all_texts, debug_info, ocr_errors = extract_text_multi(image_path)
 
         if not all_texts:
+            if ocr_errors:
+                return False, [], [f"OCR gagal pada '{filename}': {ocr_errors[0]}"]
             return False, [], [f"Tidak bisa membaca teks dari '{filename}'"]
 
         # Find all resi numbers
