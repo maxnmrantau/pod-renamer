@@ -1,3 +1,5 @@
+<img width="752" height="632" alt="image" src="https://github.com/user-attachments/assets/f91e2ad2-353f-430f-ae21-e3f3ec743bc3" />
+
 # POD Renamer - J&T Express (NM Rantau)
 
 Aplikasi desktop untuk membaca nomor resi J&T Express dari gambar POD (Proof of Delivery) menggunakan OCR, lalu otomatis me-rename dan menyalin gambar berdasarkan nomor resi yang terdeteksi.
