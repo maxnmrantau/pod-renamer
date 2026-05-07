@@ -15,6 +15,9 @@ RESI_PATTERN = re.compile(r'(J[DPXZOJ]\d{10,15})', re.IGNORECASE)
 # Looser pattern: J + any letter + digits (catches OCR misreads like "JD" → "JB" etc.)
 RESI_PATTERN_LOOSE = re.compile(r'(J\s*[A-Z]\s*\d[\d\s]{9,17})', re.IGNORECASE)
 
+# Numeric-only J&T resi: 10 digits starting with 11, 12, or 13
+RESI_NUMERIC = re.compile(r'(1[123]\d{8})')
+
 # Supported image extensions
 SUPPORTED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.webp'}
 
@@ -156,14 +159,22 @@ def count_resi_candidates(texts):
         found_in_this_text = set()
         cleaned = text.replace(' ', '').replace('\n', ' ').replace('\r', '')
 
-        # Strategy 1: Strict regex on cleaned text
+        # Strategy 1: Strict regex on cleaned text (J-prefix)
         for match in RESI_PATTERN.finditer(cleaned):
             found_in_this_text.add(match.group(1).upper())
 
-        # Strategy 2: Strict regex line by line
+        # Strategy 2: Strict regex line by line (J-prefix)
         for line in text.split('\n'):
             for match in RESI_PATTERN.finditer(line):
                 found_in_this_text.add(match.group(1).upper())
+
+        # Strategy 3: Numeric resi (11/12/13 prefix, 10 digits)
+        for match in RESI_NUMERIC.finditer(cleaned):
+            found_in_this_text.add(match.group(1))
+
+        for line in text.split('\n'):
+            for match in RESI_NUMERIC.finditer(line):
+                found_in_this_text.add(match.group(1))
 
         # Count each unique resi once per OCR text
         for resi in found_in_this_text:
