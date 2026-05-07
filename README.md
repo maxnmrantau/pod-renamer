@@ -68,3 +68,5 @@ Folder_Sumber/
     ├── JP1234567890.png
     └── rekap_resi.txt
 ```
+## Semoga Bermanfaat 🔥🔥🔥
+Traktir Coklat🍫 https://saweria.co/Makmurriansyah
