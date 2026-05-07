@@ -52,6 +52,9 @@ python main.py
 | JZ | JZ0012345678 |
 | JO | JO1234567890 |
 | JJ | JJ9876543210 |
+| 11 | 1176543210 |
+| 12 | 1276543210 |
+| 13 | 1376543210 |
 
 ## Format Gambar yang Didukung
 
