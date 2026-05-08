@@ -115,7 +115,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('icon.ico', '.'), ('tesseract_portable', 'tesseract_portable')],
+    datas=[('icon.ico', '.')],
     hiddenimports=['pytesseract', 'PIL', 'PIL.Image', 'PIL.ImageFilter', 'PIL.ImageEnhance'],
     hookspath=[],
     hooksconfig={},
