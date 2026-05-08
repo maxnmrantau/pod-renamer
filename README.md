@@ -7,11 +7,12 @@ Aplikasi desktop untuk membaca nomor resi J&T Express dari gambar POD (Proof of 
 ## Fitur
 
 - **OCR Otomatis** — Membaca teks dari gambar POD menggunakan Tesseract OCR
-- **Deteksi Resi J&T** — Mendeteksi nomor resi dengan awalan: `JD`, `JP`, `JX`, `JZ`, `JO`, `JJ`
+- **Deteksi Resi J&T** — Mendeteksi nomor resi prefix huruf (`JD`, `JP`, `JX`, `JZ`, `JO`, `JJ`) dan numerik (`11`, `12`, `13`)
+- **Consensus Voting** — Multi-pass OCR + voting untuk akurasi tinggi
 - **Auto Rename & Copy** — Gambar di-copy ke folder output dengan nama = nomor resi
 - **Rekap Resi** — Semua nomor resi dikumpulkan ke file `rekap_resi.txt`
 - **Log Proses** — Menampilkan progress real-time di GUI
-- **Modern Dark UI** — Tampilan modern berbasis Catppuccin Mocha theme
+- **Dark Cyberpunk UI** — Tema Developer Console dengan aksen hijau mint
 
 ## Prasyarat
 
@@ -21,7 +22,7 @@ Download dari [python.org](https://www.python.org/downloads/)
 ### 2. Install Tesseract OCR
 Download dan install dari: https://github.com/UB-Mannheim/tesseract/wiki
 
-> **Penting:** Pastikan path instalasi default: `C:\Program Files\Tesseract-OCR\tesseract.exe`
+> Aplikasi akan otomatis mendeteksi Tesseract. Jika terinstall di lokasi berbeda, klik tombol **⚙** di pojok kanan atas untuk mengarahkan ke `tesseract.exe`.
 
 ### 3. Install Dependencies Python
 
@@ -38,23 +39,25 @@ python main.py
 ## Cara Penggunaan
 
 1. Klik **📁 Pilih Folder** untuk memilih folder yang berisi gambar POD
-2. Klik **▶ Mulai Proses** untuk memulai OCR dan rename
-3. Lihat progress di **Log Proses** dan **Progress Bar**
-4. Setelah selesai, klik **📂 Buka Output** untuk membuka folder hasil
-5. File `rekap_resi.txt` berisi daftar semua nomor resi yang berhasil dideteksi
+2. Jika Tesseract tidak terdeteksi, klik **⚙** di pojok kanan atas → arahkan ke `tesseract.exe`
+3. Klik **▶ Mulai Proses** untuk memulai OCR dan rename
+4. Lihat progress di **Log Proses** dan **Progress Bar**
+5. Setelah selesai, klik **📂 Buka Output** untuk membuka folder hasil
+6. File `rekap_resi.txt` berisi daftar semua nomor resi yang berhasil dideteksi
 
 ## Format Resi yang Didukung
 
-| Prefix | Contoh |
-|--------|--------|
-| JD | JD0012345678 |
-| JX | JX9876543210 |
-| JZ | JZ0012345678 |
-| JO | JO1234567890 |
-| JJ | JJ9876543210 |
-| 11 | 1176543210 |
-| 12 | 1276543210 |
-| 13 | 1376543210 |
+| Prefix | Format | Contoh |
+|--------|--------|--------|
+| JD | JD + 10-15 digit | JD0012345678 |
+| JP | JP + 10-15 digit | JP1234567890 |
+| JX | JX + 10-15 digit | JX9876543210 |
+| JZ | JZ + 10-15 digit | JZ0012345678 |
+| JO | JO + 10-15 digit | JO1234567890 |
+| JJ | JJ + 10-15 digit | JJ9876543210 |
+| 11 | 10 digit (11xxxxxxxx) | 1176543210 |
+| 12 | 10 digit (12xxxxxxxx) | 1276543210 |
+| 13 | 10 digit (13xxxxxxxx) | 1376543210 |
 
 ## Format Gambar yang Didukung
 
