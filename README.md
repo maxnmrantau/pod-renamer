@@ -49,12 +49,12 @@ python main.py
 
 | Prefix | Format | Contoh |
 |--------|--------|--------|
-| JD | JD + 10-15 digit | JD0012345678 |
-| JP | JP + 10-15 digit | JP1234567890 |
-| JX | JX + 10-15 digit | JX9876543210 |
-| JZ | JZ + 10-15 digit | JZ0012345678 |
-| JO | JO + 10-15 digit | JO1234567890 |
-| JJ | JJ + 10-15 digit | JJ9876543210 |
+| JD | JD + 10 digit | JD0012345678 |
+| JP | JP + 10 digit | JP1234567890 |
+| JX | JX + 10 digit | JX9876543210 |
+| JZ | JZ + 10 digit | JZ0012345678 |
+| JO | JO + 10 digit | JO1234567890 |
+| JJ | JJ + 10 digit | JJ9876543210 |
 | 11 | 10 digit (11xxxxxxxx) | 1176543210 |
 | 12 | 10 digit (12xxxxxxxx) | 1276543210 |
 | 13 | 10 digit (13xxxxxxxx) | 1376543210 |
