@@ -107,12 +107,18 @@ class MainWindow(QMainWindow):
         header_row.addWidget(header)
         header_row.addStretch(1)
 
-        self.btn_settings = QPushButton(" ⚙ ")
+        self.btn_settings = QPushButton()
         self.btn_settings.setObjectName("settingsBtn")
         self.btn_settings.setFixedSize(40, 40)
         self.btn_settings.setToolTip("Pengaturan Tesseract OCR")
         self.btn_settings.setCursor(Qt.PointingHandCursor)
         self.btn_settings.clicked.connect(self.open_settings)
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gear_icon.png")
+        if os.path.isfile(icon_path):
+            self.btn_settings.setIcon(QIcon(icon_path))
+            self.btn_settings.setIconSize(self.btn_settings.size())
+        else:
+            self.btn_settings.setText("⚙")
         header_row.addWidget(self.btn_settings, alignment=Qt.AlignRight)
         main_layout.addLayout(header_row)
 
