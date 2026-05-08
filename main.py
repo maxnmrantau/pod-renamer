@@ -5,7 +5,7 @@ from datetime import datetime
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLineEdit, QTextEdit, QLabel, QFileDialog,
-    QProgressBar, QMessageBox, QGroupBox, QFrame
+    QProgressBar, QMessageBox, QGroupBox, QFrame, QDialog
 )
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QSettings
 from PyQt5.QtGui import QFont, QIcon, QColor, QTextCharFormat
@@ -99,23 +99,21 @@ class MainWindow(QMainWindow):
         main_layout.setContentsMargins(16, 16, 16, 16)
 
         # ── Header ──
+        header_row = QHBoxLayout()
         header = QLabel("POD Renamer - J&T Express  (NM Rantau)")
         header.setObjectName("header")
         header.setAlignment(Qt.AlignCenter)
-        main_layout.addWidget(header)
+        header_row.addStretch(1)
+        header_row.addWidget(header)
+        header_row.addStretch(1)
 
-        # ── Tesseract Path ──
-        tesseract_group = QGroupBox("Lokasi Tesseract OCR")
-        tesseract_layout = QHBoxLayout(tesseract_group)
-        self.tesseract_input = QLineEdit()
-        self.tesseract_input.setPlaceholderText("Pilih tesseract.exe (otomatis terdeteksi jika di C:\\Program Files\\...)")
-        self.tesseract_input.setReadOnly(True)
-        btn_browse_tesseract = QPushButton("📁 Cari tesseract.exe")
-        btn_browse_tesseract.setObjectName("browseBtn")
-        btn_browse_tesseract.clicked.connect(self.browse_tesseract)
-        tesseract_layout.addWidget(self.tesseract_input, stretch=1)
-        tesseract_layout.addWidget(btn_browse_tesseract)
-        main_layout.addWidget(tesseract_group)
+        self.btn_settings = QPushButton("⚙")
+        self.btn_settings.setObjectName("settingsBtn")
+        self.btn_settings.setFixedSize(36, 36)
+        self.btn_settings.setToolTip("Pengaturan Tesseract OCR")
+        self.btn_settings.clicked.connect(self.open_settings)
+        header_row.addWidget(self.btn_settings, alignment=Qt.AlignRight)
+        main_layout.addLayout(header_row)
 
         # ── Source Folder ──
         source_group = QGroupBox("Folder Sumber (Gambar POD)")
@@ -283,6 +281,18 @@ class MainWindow(QMainWindow):
                 background-color: #181c27;
                 color: #6b7280;
             }
+            #settingsBtn {
+                background-color: #1e2235;
+                color: #6b7280;
+                font-size: 14pt;
+                border: 1px solid rgba(255,255,255,0.07);
+                border-radius: 10px;
+            }
+            #settingsBtn:hover {
+                background-color: #252b40;
+                color: #63d2a8;
+                border-color: #63d2a8;
+            }
             #openBtn {
                 background-color: #f5c542;
                 color: #0f1117;
@@ -349,35 +359,71 @@ class MainWindow(QMainWindow):
         saved_path = settings.value("tesseract_path", "")
 
         if setup_tesseract(saved_path):
-            if saved_path:
-                self.tesseract_input.setText(saved_path)
-            else:
-                self.tesseract_input.setText("(terdeteksi otomatis)")
             self.statusBar().showMessage("✅ Tesseract OCR siap")
         else:
+            self.statusBar().showMessage("⚠ Tesseract OCR tidak terdeteksi — klik ⚙")
             self.log_message(
                 "⚠ Tesseract OCR tidak ditemukan!\n"
-                "   Silakan install Tesseract dari link di bawah, lalu arahkan ke file tesseract.exe:\n"
-                "   https://github.com/UB-Mannheim/tesseract/wiki",
+                "   Install dari: https://github.com/UB-Mannheim/tesseract/wiki\n"
+                "   Lalu klik tombol ⚙ di pojok kanan atas untuk mengarahkan ke tesseract.exe",
                 "error"
             )
-            self.statusBar().showMessage("⚠ Tesseract OCR tidak terdeteksi — klik 'Cari tesseract.exe'")
 
-    def browse_tesseract(self):
+    def open_settings(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Pengaturan Tesseract OCR")
+        dialog.setFixedSize(480, 180)
+        dialog.setStyleSheet(self.get_stylesheet())
+
+        layout = QVBoxLayout(dialog)
+        layout.setSpacing(14)
+        layout.setContentsMargins(20, 20, 20, 20)
+
+        title = QLabel("Lokasi Tesseract OCR")
+        title.setObjectName("header")
+        title.setAlignment(Qt.AlignLeft)
+        layout.addWidget(title)
+
+        desc = QLabel("Arahkan ke file tesseract.exe jika tidak terdeteksi otomatis.")
+        desc.setStyleSheet("color: #6b7280; font-family: 'DM Sans', 'Segoe UI', sans-serif;")
+        layout.addWidget(desc)
+
+        path_row = QHBoxLayout()
+        self.settings_path = QLineEdit()
+        settings = QSettings("NMRantau", "PODRenamer")
+        saved = settings.value("tesseract_path", "")
+        if saved:
+            self.settings_path.setText(saved)
+        else:
+            self.settings_path.setPlaceholderText("tesseract.exe terdeteksi otomatis di sistem")
+        self.settings_path.setReadOnly(True)
+        path_row.addWidget(self.settings_path, stretch=1)
+
+        btn_browse = QPushButton("📁 Cari")
+        btn_browse.setObjectName("browseBtn")
+        btn_browse.clicked.connect(lambda: self._browse_tesseract_in_dialog(dialog))
+        path_row.addWidget(btn_browse)
+        layout.addLayout(path_row)
+
+        btn_close = QPushButton("Tutup")
+        btn_close.clicked.connect(dialog.accept)
+        layout.addWidget(btn_close, alignment=Qt.AlignRight)
+
+        dialog.exec_()
+
+    def _browse_tesseract_in_dialog(self, dialog):
         path, _ = QFileDialog.getOpenFileName(
-            self, "Pilih tesseract.exe",
+            dialog, "Pilih tesseract.exe",
             "C:\\Program Files\\Tesseract-OCR",
             "tesseract.exe (tesseract.exe)"
         )
         if path and os.path.isfile(path):
             if setup_tesseract(path):
-                self.tesseract_input.setText(path)
+                self.settings_path.setText(path)
                 settings = QSettings("NMRantau", "PODRenamer")
                 settings.setValue("tesseract_path", path)
-                self.log_message(f"Tesseract OCR ditemukan: {path}", "ok")
+                self.log_message(f"Tesseract OCR diatur: {path}", "ok")
                 self.statusBar().showMessage("✅ Tesseract OCR siap")
-            else:
-                self.log_message(f"File tidak valid: {path}", "error")
 
     def browse_source(self):
         folder = QFileDialog.getExistingDirectory(self, "Pilih Folder Sumber Gambar POD")
