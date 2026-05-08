@@ -107,10 +107,11 @@ class MainWindow(QMainWindow):
         header_row.addWidget(header)
         header_row.addStretch(1)
 
-        self.btn_settings = QPushButton("⚙")
+        self.btn_settings = QPushButton(" ⚙ ")
         self.btn_settings.setObjectName("settingsBtn")
-        self.btn_settings.setFixedSize(36, 36)
+        self.btn_settings.setFixedSize(40, 40)
         self.btn_settings.setToolTip("Pengaturan Tesseract OCR")
+        self.btn_settings.setCursor(Qt.PointingHandCursor)
         self.btn_settings.clicked.connect(self.open_settings)
         header_row.addWidget(self.btn_settings, alignment=Qt.AlignRight)
         main_layout.addLayout(header_row)
@@ -283,14 +284,14 @@ class MainWindow(QMainWindow):
             }
             #settingsBtn {
                 background-color: #1e2235;
-                color: #6b7280;
-                font-size: 14pt;
-                border: 1px solid rgba(255,255,255,0.07);
+                color: #63d2a8;
+                font-size: 16pt;
+                border: 1px solid rgba(99,210,168,0.25);
                 border-radius: 10px;
             }
             #settingsBtn:hover {
-                background-color: #252b40;
-                color: #63d2a8;
+                background-color: #63d2a8;
+                color: #0f1117;
                 border-color: #63d2a8;
             }
             #openBtn {
@@ -372,8 +373,8 @@ class MainWindow(QMainWindow):
     def open_settings(self):
         dialog = QDialog(self)
         dialog.setWindowTitle("Pengaturan Tesseract OCR")
-        dialog.setFixedSize(480, 180)
-        dialog.setStyleSheet(self.get_stylesheet())
+        dialog.setFixedSize(540, 230)
+        dialog.setStyleSheet(self.get_stylesheet() + "\nQDialog { background-color: #0f1117; }")
 
         layout = QVBoxLayout(dialog)
         layout.setSpacing(14)
@@ -385,7 +386,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(title)
 
         desc = QLabel("Arahkan ke file tesseract.exe jika tidak terdeteksi otomatis.")
-        desc.setStyleSheet("color: #6b7280; font-family: 'DM Sans', 'Segoe UI', sans-serif;")
+        desc.setStyleSheet("color: #6b7280; font-family: 'DM Sans', 'Segoe UI', sans-serif; font-size: 10pt; padding: 4px 0;")
         layout.addWidget(desc)
 
         path_row = QHBoxLayout()
@@ -401,11 +402,13 @@ class MainWindow(QMainWindow):
 
         btn_browse = QPushButton("📁 Cari")
         btn_browse.setObjectName("browseBtn")
+        btn_browse.setMinimumWidth(80)
         btn_browse.clicked.connect(lambda: self._browse_tesseract_in_dialog(dialog))
         path_row.addWidget(btn_browse)
         layout.addLayout(path_row)
 
         btn_close = QPushButton("Tutup")
+        btn_close.setMinimumWidth(90)
         btn_close.clicked.connect(dialog.accept)
         layout.addWidget(btn_close, alignment=Qt.AlignRight)
 
