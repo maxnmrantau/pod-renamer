@@ -171,7 +171,7 @@ class MainWindow(QMainWindow):
         log_layout = QVBoxLayout(log_group)
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True)
-        self.log_area.setFont(QFont("Consolas", 9))
+        self.log_area.setFont(QFont("Space Mono", 9))
         log_layout.addWidget(self.log_area)
 
         btn_clear_log = QPushButton("🗑 Bersihkan Log")
@@ -186,115 +186,161 @@ class MainWindow(QMainWindow):
     def get_stylesheet(self):
         return """
             QMainWindow {
-                background-color: #1e1e2e;
+                background-color: #0f1117;
             }
             QWidget {
-                color: #cdd6f4;
-                font-family: 'Segoe UI', sans-serif;
+                color: #e8eaf0;
+                font-family: 'DM Sans', 'Segoe UI', sans-serif;
                 font-size: 10pt;
             }
             #header {
-                font-size: 16pt;
+                font-family: 'Space Mono', 'Consolas', monospace;
+                font-size: 15pt;
                 font-weight: bold;
-                color: #f38ba8;
+                color: #63d2a8;
                 padding: 8px;
                 margin-bottom: 4px;
+                letter-spacing: 1px;
             }
             QGroupBox {
+                font-family: 'Space Mono', 'Consolas', monospace;
                 font-weight: bold;
-                border: 1px solid #45475a;
-                border-radius: 8px;
-                margin-top: 12px;
-                padding-top: 18px;
-                background-color: #181825;
+                font-size: 9pt;
+                border: 1px solid rgba(255,255,255,0.07);
+                border-radius: 12px;
+                margin-top: 14px;
+                padding-top: 20px;
+                background-color: #181c27;
             }
             QGroupBox::title {
                 subcontrol-origin: margin;
-                left: 12px;
-                padding: 0 6px;
-                color: #a6adc8;
+                left: 14px;
+                padding: 0 8px;
+                color: #6b7280;
+                text-transform: uppercase;
+                letter-spacing: 1px;
             }
             QLineEdit {
-                padding: 8px 12px;
-                border: 1px solid #45475a;
-                border-radius: 6px;
-                background-color: #313244;
-                color: #cdd6f4;
+                padding: 10px 14px;
+                border: 1px solid rgba(255,255,255,0.07);
+                border-radius: 12px;
+                background-color: #1e2235;
+                color: #e8eaf0;
+                font-family: 'DM Sans', 'Segoe UI', sans-serif;
             }
             QLineEdit:focus {
-                border-color: #89b4fa;
+                border-color: #63d2a8;
             }
             QPushButton {
-                padding: 8px 18px;
+                padding: 9px 20px;
                 border: none;
-                border-radius: 6px;
+                border-radius: 12px;
                 font-weight: bold;
-                background-color: #45475a;
-                color: #cdd6f4;
+                font-family: 'Space Mono', 'Consolas', monospace;
+                font-size: 9pt;
+                background-color: #1e2235;
+                color: #e8eaf0;
+                letter-spacing: 0.5px;
             }
             QPushButton:hover {
-                background-color: #585b70;
+                background-color: #252b40;
             }
             QPushButton:disabled {
-                background-color: #313244;
-                color: #6c7086;
+                background-color: #181c27;
+                color: #6b7280;
             }
             #browseBtn {
-                background-color: #89b4fa;
-                color: #1e1e2e;
+                background-color: #1e2235;
+                color: #63d2a8;
+                border: 1px solid rgba(99,210,168,0.3);
             }
             #browseBtn:hover {
-                background-color: #74c7ec;
+                background-color: #252b40;
+                border-color: #63d2a8;
             }
             #startBtn {
-                background-color: #a6e3a1;
-                color: #1e1e2e;
-                font-size: 11pt;
+                background-color: #63d2a8;
+                color: #0f1117;
+                font-size: 10pt;
+                letter-spacing: 1px;
             }
             #startBtn:hover {
-                background-color: #94e2d5;
+                background-color: #7ddfba;
             }
             #startBtn:disabled {
-                background-color: #313244;
-                color: #6c7086;
+                background-color: #181c27;
+                color: #6b7280;
+                border: 1px solid rgba(255,255,255,0.07);
             }
             #cancelBtn {
-                background-color: #f38ba8;
-                color: #1e1e2e;
+                background-color: #ff6b6b;
+                color: #0f1117;
             }
             #cancelBtn:hover {
-                background-color: #eba0ac;
+                background-color: #ff8787;
+            }
+            #cancelBtn:disabled {
+                background-color: #181c27;
+                color: #6b7280;
             }
             #openBtn {
-                background-color: #fab387;
-                color: #1e1e2e;
+                background-color: #f5c542;
+                color: #0f1117;
             }
             #openBtn:hover {
-                background-color: #f9e2af;
+                background-color: #f7d46b;
             }
             QProgressBar {
-                border: 1px solid #45475a;
-                border-radius: 6px;
+                border: 1px solid rgba(255,255,255,0.07);
+                border-radius: 12px;
                 text-align: center;
-                background-color: #313244;
-                color: #cdd6f4;
-                height: 22px;
+                background-color: #1e2235;
+                color: #e8eaf0;
+                height: 24px;
+                font-family: 'Space Mono', 'Consolas', monospace;
+                font-size: 8pt;
             }
             QProgressBar::chunk {
-                background-color: #a6e3a1;
-                border-radius: 5px;
+                background-color: #63d2a8;
+                border-radius: 10px;
             }
             QTextEdit {
-                border: 1px solid #45475a;
-                border-radius: 6px;
-                background-color: #11111b;
-                color: #cdd6f4;
-                padding: 6px;
+                border: 1px solid rgba(255,255,255,0.07);
+                border-radius: 12px;
+                background-color: #0f1117;
+                color: #e8eaf0;
+                padding: 10px;
+                font-family: 'Space Mono', 'Consolas', monospace;
+                font-size: 9pt;
             }
             QStatusBar {
-                background-color: #181825;
-                color: #6c7086;
-                border-top: 1px solid #45475a;
+                background-color: #181c27;
+                color: #6b7280;
+                border-top: 1px solid rgba(255,255,255,0.07);
+                font-family: 'Space Mono', 'Consolas', monospace;
+                font-size: 8pt;
+            }
+            QScrollBar:vertical {
+                background: #0f1117;
+                width: 8px;
+                margin: 0;
+                border-radius: 4px;
+            }
+            QScrollBar::handle:vertical {
+                background: #1e2235;
+                min-height: 30px;
+                border-radius: 4px;
+            }
+            QScrollBar::handle:vertical:hover {
+                background: #252b40;
+            }
+            QScrollBar::add-line:vertical,
+            QScrollBar::sub-line:vertical {
+                height: 0;
+            }
+            QScrollBar::add-page:vertical,
+            QScrollBar::sub-page:vertical {
+                background: none;
             }
         """
 
@@ -406,10 +452,10 @@ class MainWindow(QMainWindow):
 
     def log_message(self, message, level="info"):
         color_map = {
-            "info": "#89b4fa",
-            "ok": "#a6e3a1",
-            "warn": "#f9e2af",
-            "error": "#f38ba8",
+            "info": "#63d2a8",
+            "ok": "#63d2a8",
+            "warn": "#f5c542",
+            "error": "#ff6b6b",
         }
         prefix_map = {
             "info": "INFO",
@@ -418,17 +464,17 @@ class MainWindow(QMainWindow):
             "error": " ERR",
         }
 
-        color = color_map.get(level, "#cdd6f4")
+        color = color_map.get(level, "#e8eaf0")
         prefix = prefix_map.get(level, "INFO")
         timestamp = datetime.now().strftime("%H:%M:%S")
 
         if message.startswith("═") or message.startswith("─"):
-            self.log_area.append(f'<span style="color:#6c7086">{message}</span>')
+            self.log_area.append(f'<span style="color:#6b7280">{message}</span>')
         else:
             self.log_area.append(
-                f'<span style="color:#6c7086">[{timestamp}]</span> '
+                f'<span style="color:#6b7280">[{timestamp}]</span> '
                 f'<span style="color:{color}">[{prefix}]</span> '
-                f'<span style="color:#cdd6f4">{message}</span>'
+                f'<span style="color:#e8eaf0">{message}</span>'
             )
 
         # Auto-scroll to bottom
